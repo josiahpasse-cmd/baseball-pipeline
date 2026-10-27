@@ -10,7 +10,7 @@ BATTING_URL = 'https://retrosheet.org/downloads/batting.zip'
 PITCHING_URL = 'https://retrosheet.org/downloads/pitching.zip'
 FIELDING_URL = 'https://retrosheet.org/downloads/fielding.zip'
 
-urls = [BALLPARKS_URL, GAMES_URL, BIOFILE_URL]#, BATTING_URL, PITCHING_URL, FIELDING_URL]
+urls = [BALLPARKS_URL, GAMES_URL, BIOFILE_URL, BATTING_URL, PITCHING_URL, FIELDING_URL]
 
 # Set the target directory
 target_dir = '/Volumes/workspace/baseball/baseball_raw/'
@@ -23,10 +23,10 @@ for url in urls:
         print(f'Downloaded file {url}. Parsing data...')
 
         # Unzip response content to tempfile. Responses contain zipped files.
-
         content = response.content
         zipped = ZipFile(io.BytesIO(response.content))
         zipped.extractall(target_dir)
+        print(f'Data Parsed Successful for {url}!')
 
     except requests.exceptions.HTTPError:
         print(f'Failed to download {url}. HTTP Error encountered. Status Code {response.status_code}')
