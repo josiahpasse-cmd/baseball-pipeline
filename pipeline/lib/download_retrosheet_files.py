@@ -11,12 +11,9 @@ BATTING_URL = 'https://retrosheet.org/downloads/batting.zip'
 PITCHING_URL = 'https://retrosheet.org/downloads/pitching.zip'
 FIELDING_URL = 'https://retrosheet.org/downloads/fielding.zip'
 
-# Set the target directory
-TARGET_DIR = '/Volumes/workspace/baseball/baseball_raw/'
-
 urls = [BALLPARKS_URL, GAMES_URL, BIOFILE_URL, BATTING_URL, PITCHING_URL, FIELDING_URL]
 
-def download_retrosheet_data(urls: list[str], target_dir: str) -> None:
+def download_retrosheet_data(urls: list[str] = urls, target_dir: str = '/Volumes/workspace/baseball/baseball_raw/') -> None:
     for url in urls:
         try:
             # Retrieve data from Retrosheet
@@ -51,3 +48,5 @@ def download_retrosheet_data(urls: list[str], target_dir: str) -> None:
             file_path = os.path.join(target_dir, file)
             os.remove(file_path)
             print(f'Removed unneeded file {file}')
+
+    print("\n" + "─" * 40)
