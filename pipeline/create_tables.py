@@ -169,6 +169,14 @@ def create_silver_tables() -> None:
         FROM workspace.baseball.bronze_gameinfo
     ''')
 
+    leagues_df = spark.sql('''
+        SELECT
+            CAST(LeagueCode AS STRING) AS LeagueID,
+            CAST(LeagueName AS STRING) AS Name,
+            CAST(IsNegroLeague AS BOOLEAN) AS IsNegroLeague
+        FROM workspace.baseball.bronze_leagues
+    ''')
+
     pitching_df = spark.sql('''
         SELECT 
             CAST(gid AS STRING) AS GameID,
@@ -202,6 +210,32 @@ def create_silver_tables() -> None:
             IF(p_gf IS NULL OR p_gf = 0, false, true) AS GameFinished,
             IF(p_cg IS NULL OR p_cg = 0, false, true) AS CompleteGame
         FROM workspace.baseball.bronze_pitching
+    ''')
+
+    positions_df = spark.sql('''
+        SELECT
+            CAST(PositionID AS INT) AS PositionID,
+            CAST(Name AS STRING) AS Name,
+            CAST(Abbreviation AS STRING) AS Abbreviation,
+            CAST(Category AS STRING) AS Category
+        FROM workspace.baseball.bronze_positions
+    ''')
+
+    teamleagues_df = spark.sql('''
+        SELECT
+            CAST(TeamCode AS STRING) AS TeamID,
+            CAST(LeagueCode AS STRING) AS LeagueID,
+            CAST(FirstSeason AS INT) AS FirstSeason,
+            CAST(LastSeason AS INT) As LastSeason
+        FROM workspace.baseball.bronze_teamleagues
+    ''')
+
+    teams_df = spark.sql('''
+    SELECT
+        CAST(TEAM AS STRING) AS TeamID,
+        CAST(FIRST AS INT) AS FirstSeason,
+        IF(LAST = '2025', NULL, CAST(LAST AS INT)) AS LastSeason
+    FROM workspace.baseball.bronze_teams
     ''')
 
 if __name__ == '__main__':
