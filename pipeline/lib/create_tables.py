@@ -13,7 +13,7 @@ def create_bronze_tables(target_dir: str) -> None:
             df.write.format('delta').mode('overwrite').saveAsTable(f'workspace.baseball.bronze_{file_name}')
             print(f'Successfully loaded table bronze_{file}!')
         except Exception as e:
-            print(f'Error loading file {file}. Exception {e}')
+            print(f'Error loading file {file}. {e}')
             errors.append(e)
     if not errors:
         print('All bronze tables created!')
@@ -22,13 +22,13 @@ def create_bronze_tables(target_dir: str) -> None:
 
     print("\n" + "─" * 40)
 
-def create_silver_tables(query_path: str) -> None:
-    # For each query in the query_path, execute the query to create silver tables.
+def create_layer_tables(layer: str, query_path: str) -> None:
+    # For each query in the query_path, execute the query to create tables.
     spark = SparkSession.builder.getOrCreate()
     errors = []
-    for file in os.listdir(query_path):
+    for file in os.listdir(os.path.join(query_path, layer)):
         file_name = str(file.split('.')[0])
-        with open(os.path.join(query_path, file)) as query_file:
+        with open(os.path.join(query_path, layer, file)) as query_file:
             query = query_file.read()
             try:
                 df = spark.sql(query)
@@ -46,8 +46,8 @@ def create_silver_tables(query_path: str) -> None:
                 errors.append(e)
                 continue
     if not errors:
-        print('All silver tables created!')
+        print(f'All {layer} tables created!')
     else:
-        print(f'{len(errors)} errors encountered when creating silver tables.')
+        print(f'{len(errors)} errors encountered when creating {layer} tables.')
 
     print("\n" + "─" * 40)

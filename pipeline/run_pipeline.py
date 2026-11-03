@@ -1,4 +1,4 @@
-from lib.create_tables import create_bronze_tables, create_silver_tables
+from lib.create_tables import create_bronze_tables, create_layer_tables
 from lib.download_retrosheet_files import download_retrosheet_data
 
 # Download all files from Retrosheet
@@ -10,4 +10,7 @@ download_retrosheet_data(target_dir = TARGET_DIR)
 create_bronze_tables(target_dir = TARGET_DIR)
 
 # Create Silver Tables
-create_silver_tables(query_path = 'queries')
+create_layer_tables(layer = 'silver', query_path = 'queries')
+
+#Create Gold Tables
+create_layer_tables(layer = 'gold', query_path = 'queries')
