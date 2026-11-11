@@ -21,4 +21,4 @@ FROM workspace.baseball.silver_biofile b
 INNER JOIN 2223Stats s1 ON s1.PlayerID = b.PlayerID AND s1.Season = '2022'
 INNER JOIN 2223Stats s2 ON s2.PlayerID = b.PlayerID AND s2.Season = '2023'
 GROUP BY ALL
-ORDER BY b.PlayerID
+ORDER BY b.PlayerID;
