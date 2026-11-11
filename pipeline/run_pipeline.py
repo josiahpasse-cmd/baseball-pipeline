@@ -4,13 +4,17 @@ from lib.download_retrosheet_files import download_retrosheet_data
 # Download all files from Retrosheet
 # First, set the target directory
 TARGET_DIR = '/Volumes/workspace/baseball/baseball_raw/'
-download_retrosheet_data(target_dir = TARGET_DIR)
+if download_retrosheet_data(target_dir = TARGET_DIR):
+    print('Errors encountered downloading from Retrosheet. Quiting...')
 
 # Create Bronze Tables
-create_bronze_tables(target_dir = TARGET_DIR)
+if create_bronze_tables(target_dir = TARGET_DIR):
+    print('Errors encountered creating bronze tables. Quiting...')
 
 # Create Silver Tables
-create_layer_tables(layer = 'silver', query_path = 'queries')
+if create_layer_tables(layer = 'silver', query_path = 'queries'):
+    print('Errors encountered creating silver tables. Quiting...')
 
-#Create Gold Tables
-create_layer_tables(layer = 'gold', query_path = 'queries')
+# Create Gold Tables
+if create_layer_tables(layer = 'gold', query_path = 'queries'):
+    print('Errors encountered creating gold tables. Quiting...')

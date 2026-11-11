@@ -13,7 +13,8 @@ FIELDING_URL = 'https://retrosheet.org/downloads/fielding.zip'
 
 urls = [BALLPARKS_URL, GAMES_URL, BIOFILE_URL, BATTING_URL, PITCHING_URL, FIELDING_URL]
 
-def download_retrosheet_data(urls: list[str] = urls, target_dir: str = '/Volumes/workspace/baseball/baseball_raw/') -> None:
+def download_retrosheet_data(urls: list[str] = urls, target_dir: str = '/Volumes/workspace/baseball/baseball_raw/') -> bool:
+    errors = []
     for url in urls:
         try:
             # Retrieve data from Retrosheet
@@ -28,10 +29,15 @@ def download_retrosheet_data(urls: list[str] = urls, target_dir: str = '/Volumes
             print(f'Data Parsed Successful for {url}!')
 
         except requests.exceptions.HTTPError:
-            print(f'Failed to download {url}. HTTP Error encountered. Status Code {response.status_code}')
+            message = f'Failed to download {url}. HTTP Error encountered. Status Code {response.status_code}'
+            errors.append(message)
+            print(message)
         except Exception as e:
             print(f'Failed to download {url}. Exception {e}')
             raise
+
+    if errors:
+        return True
 
     # List the files that were downloaded
     print("Files Downloaded...")
@@ -50,3 +56,4 @@ def download_retrosheet_data(urls: list[str] = urls, target_dir: str = '/Volumes
             print(f'Removed unneeded file {file}')
 
     print("\n" + "─" * 40)
+    return False

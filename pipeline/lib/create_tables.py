@@ -2,7 +2,7 @@ import os
 from pyspark.sql import SparkSession
 
 # Load data into spark
-def create_bronze_tables(target_dir: str) -> None:
+def create_bronze_tables(target_dir: str) -> bool:
     # For each raw_data file, load it into bronze without any typing
     spark = SparkSession.builder.getOrCreate()
     errors = []
@@ -19,10 +19,12 @@ def create_bronze_tables(target_dir: str) -> None:
         print('All bronze tables created!')
     else:
         print(f'{len(errors)} errors encountered when creating bronze tables.')
+        return True
 
     print("\n" + "─" * 40)
+    return False
 
-def create_layer_tables(layer: str, query_path: str) -> None:
+def create_layer_tables(layer: str, query_path: str) -> bool:
     # For each query in the query_path, execute the query to create tables.
     spark = SparkSession.builder.getOrCreate()
     errors = []
@@ -49,5 +51,7 @@ def create_layer_tables(layer: str, query_path: str) -> None:
         print(f'All {layer} tables created!')
     else:
         print(f'{len(errors)} errors encountered when creating {layer} tables.')
+        return True
 
     print("\n" + "─" * 40)
+    return False
